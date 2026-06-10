@@ -1,0 +1,108 @@
+# ============================================================
+# RecoverFlow AI — Docker Compose (Local Development)
+# ============================================================
+# Services:
+#   db      — PostgreSQL 16 with init.sql auto-executed
+#   redis   — Redis 7 for Celery broker + result backend
+#   api     — FastAPI gateway (uvicorn)
+#   worker  — Celery background worker
+# ============================================================
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: recoverflow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: recoverflow
+      POSTGRES_PASSWORD: recoverflow
+      POSTGRES_DB: recoverflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recoverflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Redis ────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: recoverflow_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── FastAPI Gateway ──────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: recoverflow_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://recoverflow:recoverflow@db:5432/recoverflow"
+      REDIS_URL: "redis://redis:6379/0"
+      CELERY_BROKER_URL: "redis://redis:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis:6379/1"
+      SHOPIFY_API_KEY: "${SHOPIFY_API_KEY:-}"
+      SHOPIFY_API_SECRET: "${SHOPIFY_API_SECRET:-}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      WHATSAPP_DEFAULT_ACCESS_TOKEN: "${WHATSAPP_DEFAULT_ACCESS_TOKEN:-}"
+      WHATSAPP_DEFAULT_PHONE_NUMBER_ID: "${WHATSAPP_DEFAULT_PHONE_NUMBER_ID:-}"
+      PYTHONPATH: "/app"
+      DEBUG: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app  # Hot-reload during development
+
+  # ── Celery Worker ────────────────────────────────────────
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: recoverflow_worker
+    restart: unless-stopped
+    command: >
+      celery -A tasks worker
+        --loglevel=info
+        --concurrency=4
+        --queues=default,recovery
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://recoverflow:recoverflow@db:5432/recoverflow"
+      REDIS_URL: "redis://redis:6379/0"
+      CELERY_BROKER_URL: "redis://redis:6379/0"
+      CELERY_RESULT_BACKEND: "redis://redis:6379/1"
+      SHOPIFY_API_KEY: "${SHOPIFY_API_KEY:-}"
+      SHOPIFY_API_SECRET: "${SHOPIFY_API_SECRET:-}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      WHATSAPP_DEFAULT_ACCESS_TOKEN: "${WHATSAPP_DEFAULT_ACCESS_TOKEN:-}"
+      WHATSAPP_DEFAULT_PHONE_NUMBER_ID: "${WHATSAPP_DEFAULT_PHONE_NUMBER_ID:-}"
+      PYTHONPATH: "/app"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+volumes:
+  pgdata:
+    driver: local

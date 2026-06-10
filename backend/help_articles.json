@@ -1,0 +1,86 @@
+[
+  {
+    "id": "getting-started",
+    "title": "Getting Started with RecoverFlow AI",
+    "category": "Setup Guide",
+    "summary": "Learn how to activate RecoverFlow AI and recover your first abandoned store checkout.",
+    "content": "# Getting Started with RecoverFlow AI\n\nWelcome to RecoverFlow AI! This guide will help you set up automated WhatsApp recovery campaigns and start saving abandoned sales in minutes.\n\n## Setup Steps\n\n1. **Connect WhatsApp Business**: Go to the Settings page and enter your WhatsApp Phone Number ID and Access Token to link your business account.\n2. **Choose a Subscription Plan**: Visit the Billing & Credits tab to choose a subscription plan (Starter, Growth, or Scale) that fits your store's size.\n3. **Activate Automated Recovery**: Toggle the \"Cart Recovery Active\" switch on your dashboard to enable recovery workflows.\n\nOnce active, our system will automatically detect when a customer abandons a shopping cart and schedule a personalized WhatsApp recovery sequence to win them back.\n\nNeed support? Reach out to us at **support@recoverflow.ai**."
+  },
+  {
+    "id": "connecting-whatsapp",
+    "title": "Connecting WhatsApp Business",
+    "category": "Setup Guide",
+    "summary": "How to link your WhatsApp Business account to RecoverFlow to send automated recovery messages.",
+    "content": "# Connecting WhatsApp Business\n\nRecoverFlow AI uses your official Meta WhatsApp Business API account to dispatch personalized reminders to your customers. Linking your account ensures messages are sent from your own branded phone number.\n\n## How to Connect\n\n1. Navigate to the **Settings** page in your RecoverFlow dashboard.\n2. Enter your **WhatsApp Phone Number ID** (provided by your Meta Developer Portal).\n3. Enter your **WhatsApp API Access Token**.\n4. Click **Save Configuration**.\n\n## Why use the Official API?\n- **Brand Verification**: Customers see your official business profile, logo, and a verified green badge (if approved by Meta).\n- **High Delivery Rates**: Official templates ensure messages bypass spam folders and deliver instantly.\n- **Interactive Buttons**: Messages can include one-click checkout recovery links and quick-reply options."
+  },
+  {
+    "id": "subscription-plans",
+    "title": "Subscription Plans & Pricing",
+    "category": "Billing & Payments",
+    "summary": "Understand our Starter, Growth, and Scale plans and choose the right tier for your store.",
+    "content": "# Subscription Plans & Pricing\n\nRecoverFlow AI offers three simple subscription tiers designed to fit stores at every stage of growth. All subscription charges are billed directly through your monthly Shopify invoice.\n\n## Pricing Tiers\n\n### 1. Starter Plan ($3.99/mo)\n- **Best for**: Small stores starting out with recovery campaigns.\n- **Includes**: 100 free monthly WhatsApp credits.\n- **Features**: Standard Checkout Recovery.\n\n### 2. Growth Plan ($7.99/mo)\n- **Best for**: Growing brands looking to maximize sales.\n- **Includes**: 300 free monthly WhatsApp credits.\n- **Features**: Checkout Recovery + Cart Abandonment Recovery + AI Customer Segmentation.\n\n### 3. Scale Plan ($24.99/mo)\n- **Best for**: High-volume stores and enterprise merchants.\n- **Includes**: 1000 free monthly WhatsApp credits.\n- **Features**: All features + Priority Support + **Dedicated Priority Dispatch Queue** (guarantees zero message delays during flash sales or high-traffic events)."
+  },
+  {
+    "id": "whatsapp-credits",
+    "title": "How WhatsApp Credits Work",
+    "category": "Billing & Payments",
+    "summary": "Learn about monthly bundled credits, credit usage, and ledger management.",
+    "content": "# How WhatsApp Credits Work\n\nRecoverFlow AI uses a credit-based ledger to manage your WhatsApp messaging volume. \n\n## Credit Rules\n- **1 Message = 1 Credit**: Sending a single WhatsApp recovery template to a customer uses exactly 1 credit.\n- **Free Monthly Credits**: Every plan includes a monthly credit bundle (100, 300, or 1000 credits) that refreshes at the start of your billing cycle. Unused monthly free credits do not roll over.\n- **Recharge Credits**: Purchased credit packs (500, 1000, or 5000 credits) are added directly to your balance and **never expire**."
+  },
+  {
+    "id": "credit-recharge",
+    "title": "Recharging WhatsApp Credits",
+    "category": "Billing & Payments",
+    "summary": "How to buy additional credits when your monthly bundled allowance runs low.",
+    "content": "# Recharging WhatsApp Credits\n\nIf you use up your monthly bundled credits, or if you want to stockpile credits for upcoming high-traffic sales, you can recharge your wallet on-demand.\n\n## How to Recharge\n\n1. Go to the **Billing & Credits** page.\n2. Locate the **Recharge Wallet** tab.\n3. Select your desired package:\n   - **500 Credits**: $4.99 (Approx. ₹399)\n   - **1000 Credits**: $7.99 (Approx. ₹649)\n   - **5000 Credits**: $29.99 (Approx. ₹2499)\n4. Click **Purchase Credits**.\n5. Approve the charge on the Shopify Checkout screen.\n\nCredits are added immediately upon checkout confirmation and do not expire."
+  },
+  {
+    "id": "checkout-recovery",
+    "title": "Abandoned Checkout Recovery",
+    "category": "Recovery Campaigns",
+    "summary": "Recover customers who entered their contact details but didn't finish the payment.",
+    "content": "# Abandoned Checkout Recovery\n\nAbandoned Checkout Recovery is the core feature of RecoverFlow AI. It automatically reaches out to customers who filled out their contact information on the Shopify checkout page but left before completing their order.\n\n## How It Works\n\nWhen a checkout is abandoned, RecoverFlow schedules a three-step WhatsApp campaign:\n- **Step 1 (30 Minutes)**: A friendly, helpful check-in to see if they faced any issues.\n- **Step 2 (6 Hours)**: Introduces social proof and gentle urgency (e.g., \"Items in your cart are selling fast\").\n- **Step 3 (24 Hours)**: A final reminder providing a quick link to complete their purchase.\n\nIf the customer purchases at any point, the remaining scheduled reminders are automatically cancelled."
+  },
+  {
+    "id": "cart-abandonment",
+    "title": "Cart Abandonment Recovery",
+    "category": "Recovery Campaigns",
+    "summary": "Recover visitors who added items to their shopping cart but didn't click checkout.",
+    "content": "# Cart Abandonment Recovery\n\n*Note: This feature is available on the **Growth** and **Scale** plans.*\n\nWhile Checkout Recovery captures users who reached the payment phase, **Cart Abandonment Recovery** targets visitors earlier in the funnel—those who logged in or provided their contact details, added items to their cart, and left without clicking \"Check Out.\"\n\n## Key Benefits\n- **Broader Reach**: Captures high-intent window shoppers who didn't fill out the shipping forms.\n- **AI-Tailored Content**: The message content is automatically customized with the specific items left in their cart and a link to return directly to their active shopping cart."
+  },
+  {
+    "id": "ai-segmentation",
+    "title": "AI Customer Segmentation",
+    "category": "Recovery Campaigns",
+    "summary": "How our Gemini AI engine categorizes your buyers to write highly converting messages.",
+    "content": "# AI Customer Segmentation\n\n*Note: This feature is available on the **Growth** and **Scale** plans.*\n\nRecoverFlow AI doesn't send generic, spammy templates. Instead, our system uses advanced AI intelligence to categorize your customers into distinct behavioral segments and adjust message copy accordingly.\n\n## Customer Segments\n- **First-Time Buyer**: Focused on trust-building, offering friendly assistance.\n- **Repeat Customer**: Focused on loyalty and showing appreciation for their return.\n- **High-Value Cart**: Structured with elevated brand tone to protect premium margins.\n- **Price-Sensitive Shopper**: Leverages promotional hooks or savings highlights.\n\nBy matching the customer's behavior with your store's brand tone, RecoverFlow AI maximizes conversions without diluting your brand value."
+  },
+  {
+    "id": "dashboard-metrics",
+    "title": "Understanding Dashboard Metrics",
+    "category": "Dashboard Metrics",
+    "summary": "Learn what Recovered Revenue, Recovery Rate, and other indicators mean.",
+    "content": "# Understanding Dashboard Metrics\n\nYour dashboard provides real-time visibility into the performance of your automated recovery campaigns. Here is what the key metrics represent:\n\n- **Recovered Revenue**: The total value of orders that were successfully completed after a customer received a RecoverFlow WhatsApp reminder.\n- **Recovery Rate**: The percentage of abandoned checkout sessions that resulted in a successful purchase after a reminder was dispatched.\n- **Credits Used**: The total number of WhatsApp credits spent sending reminders.\n- **Pending Schedules**: The number of recovery messages currently queued to go out for active abandoned sessions."
+  },
+  {
+    "id": "billing-payments",
+    "title": "Billing & Payments",
+    "category": "Billing & Payments",
+    "summary": "How Shopify Bills you for subscriptions and credit recharges.",
+    "content": "# Billing & Payments\n\nTo make invoice management simple, RecoverFlow AI integrates directly with **Shopify Billing**.\n\n## Billing Details\n- **Single Invoice**: All subscription fees and credit recharge charges are added as line items directly on your regular monthly Shopify store bill.\n- **Refunds & Cancellations**: If you uninstall the app, Shopify automatically handles the cancellation of the recurring subscription charge. Credits remaining in your ledger are non-refundable.\n- **Support Queries**: For billing discrepancies, please email us directly at **support@recoverflow.ai** with your store domain."
+  },
+  {
+    "id": "terms-policies",
+    "title": "Terms of Service & Usage Policy",
+    "category": "Support",
+    "summary": "Read the rules, Meta compliance guidelines, and limitation of liability policy that govern the use of RecoverFlow AI.",
+    "content": "# Terms of Service & Usage Policy\n\nBy installing and using RecoverFlow AI, you agree to comply with our terms of service, usage guidelines, and official Meta policies. Please review these terms carefully to protect your store and brand.\n\n## 1. Meta / WhatsApp Policy Compliance\n- **Customer Consent**: You are solely responsible for obtaining explicit opt-in consent from your customers before sending them automated WhatsApp recovery reminders. Sending unsolicited spam messages may lead to customer complaints and the suspension of your Meta WhatsApp Business API account.\n- **Account Suspensions**: RecoverFlow AI is a dispatch tool. We are not responsible or liable for any actions, suspensions, or bans imposed on your WhatsApp Business Account by Meta.\n\n## 2. Limitation of Liability\n- **No Revenue Guarantees**: RecoverFlow AI provides automation tools to assist in sales recovery. We do not guarantee specific conversion rates, sales volumes, or increased revenue.\n- **System Uptime**: While we strive for 99.9% uptime, we are not liable for any lost sales, data loss, or delayed notifications due to network outages, Shopify API rate limits, or Meta API downtime.\n\n## 3. Billing & Refunds\n- **Shopify Billing**: All subscription fees and credits purchases are billed via Shopify.\n- **Non-Refundable Credits**: WhatsApp credit packages purchased through RecoverFlow AI are final and non-refundable. Remaining credits hold no cash value and cannot be refunded if you uninstall the application.\n\n## 4. Privacy & Data Handling\n- **Data Minimization**: We only store abandoned checkout contact details (name, phone number, and cart items) temporarily to schedule and run the recovery campaigns. We do not sell, share, or monetize your customers' personal information.\n\nFor legal or policy-related questions, contact us at **support@recoverflow.ai**."
+  },
+  {
+    "id": "faqs",
+    "title": "Frequently Asked Questions",
+    "category": "Support",
+    "summary": "Quick answers to common questions about templates, pauses, and rates.",
+    "content": "# Frequently Asked Questions (FAQs)\n\n### 1. Why are my campaigns paused?\nYour campaigns will pause automatically if your credit balance reaches `0`. Buy a credit package under the Billing & Credits tab to resume sending.\n\n### 2. Can I edit the WhatsApp templates?\nYes, brand tone settings (e.g. Luxury, Playful, Professional) can be set in the Settings tab, and the AI will adjust the templates automatically.\n\n### 3. How do I contact customer support?\nFor custom integrations, token setup support, or billing queries, email **support@recoverflow.ai**."
+  }
+]

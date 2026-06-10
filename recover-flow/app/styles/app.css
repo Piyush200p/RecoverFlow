@@ -1,0 +1,1032 @@
+/* RecoverFlow AI — Premium Styling Theme
+=========================================
+Adds custom styles for a stunning dashboard, glassmorphism cards,
+vibrant gradients, status badges, and subtle micro-animations.
+*/
+
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  --info-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rf-dashboard {
+  font-family: var(--font-family);
+  padding: 1.5rem;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: var(--text-primary);
+}
+
+/* ── Header Area ────────────────────────────────────────── */
+.rf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.rf-logo-section h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #a5b4fc, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.rf-logo-section p {
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0 0;
+  font-size: 0.875rem;
+}
+
+.rf-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ── Credit Badge & Recharge ────────────────────────────── */
+.rf-credit-badge {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e0e7ff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+.rf-credit-count {
+  font-weight: 800;
+  color: #c7d2fe;
+}
+
+/* ── Metrics Grid ───────────────────────────────────────── */
+.rf-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rf-metric-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-premium);
+  backdrop-filter: blur(12px);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.rf-metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.rf-metric-card.recovered::before { background: var(--success-gradient); }
+.rf-metric-card.rate::before { background: var(--info-gradient); }
+.rf-metric-card.lost::before { background: var(--warning-gradient); }
+.rf-metric-card.credits::before { background: var(--primary-gradient); }
+
+.rf-metric-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6);
+}
+
+.rf-metric-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.rf-metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.rf-metric-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* ── Section Styles ─────────────────────────────────────── */
+.rf-section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-premium);
+  backdrop-filter: blur(12px);
+}
+
+.rf-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ── Status Badges ──────────────────────────────────────── */
+.rf-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.rf-badge.recovered {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.rf-badge.processing {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.rf-badge.pending {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.rf-badge.failed {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.rf-badge.exhausted {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ── Settings Panel ─────────────────────────────────────── */
+.rf-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.rf-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+.rf-input, .rf-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.rf-input:focus, .rf-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.rf-button {
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.rf-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+}
+
+.rf-button:active {
+  transform: translateY(1px);
+}
+
+.rf-button.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.rf-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Toggle Switch ──────────────────────────────────────── */
+.rf-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rf-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.rf-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.rf-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: .4s;
+  border-radius: 34px;
+  border: 1px solid var(--card-border);
+}
+
+.rf-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .rf-slider {
+  background: var(--success-gradient);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+input:checked + .rf-slider:before {
+  transform: translateX(24px);
+}
+
+/* ── Table Styling ──────────────────────────────────────── */
+.rf-table-container {
+  overflow-x: auto;
+}
+
+.rf-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.rf-table th {
+  padding: 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.rf-table td {
+  padding: 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.rf-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ── Billing Cards ──────────────────────────────────────── */
+.rf-billing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.rf-billing-card {
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Plan Specific Cards */
+
+/* Starter Card: Light, Clean Slate Layout */
+.rf-billing-card.starter-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+}
+.rf-billing-card.starter-card.selected-card {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px #6366f1, 0 10px 25px -5px rgba(99, 102, 241, 0.15);
+}
+.rf-billing-card.starter-card .rf-billing-title {
+  color: #334155;
+}
+.rf-billing-card.starter-card .rf-billing-price {
+  color: #0f172a;
+}
+.rf-billing-card.starter-card .rf-billing-price span {
+  color: #64748b;
+}
+.rf-billing-card.starter-card .rf-billing-features li {
+  color: #475569;
+}
+
+/* Growth Card: Popular Card with light mint tint and green borders */
+.rf-billing-card.growth-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+.rf-billing-card.growth-card.selected-card {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px #10b981, 0 10px 25px -5px rgba(16, 185, 129, 0.15);
+}
+.rf-billing-card.growth-card .rf-billing-title {
+  color: #065f46;
+}
+.rf-billing-card.growth-card .rf-billing-price {
+  color: #0f172a;
+}
+.rf-billing-card.growth-card .rf-billing-price span {
+  color: #64748b;
+}
+.rf-billing-card.growth-card .rf-billing-features li {
+  color: #374151;
+}
+
+/* Scale Card: Deep Premium Indigo/Violet Design */
+.rf-billing-card.scale-card {
+  background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
+  border: 1px solid #4338ca;
+  color: #ffffff;
+}
+.rf-billing-card.scale-card.selected-card {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 2px #818cf8, 0 10px 25px -5px rgba(129, 140, 248, 0.3);
+}
+.rf-billing-card.scale-card .rf-billing-title {
+  color: #c7d2fe;
+}
+.rf-billing-card.scale-card .rf-billing-price {
+  color: #ffffff;
+}
+.rf-billing-card.scale-card .rf-billing-price span {
+  color: #93c5fd;
+}
+.rf-billing-card.scale-card .rf-billing-features li {
+  color: #cbd5e1;
+}
+.rf-billing-card.scale-card .rf-billing-features li::before {
+  color: #38bdf8; /* Cyan bullet point for high contrast */
+}
+
+/* Badges */
+.rf-popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-gradient);
+  color: white;
+  padding: 0.25rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.rf-billing-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.rf-billing-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+.rf-billing-price span {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.rf-local-price {
+  font-size: 0.825rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+.rf-billing-card.starter-card .rf-local-price {
+  color: #4f46e5;
+}
+.rf-billing-card.growth-card .rf-local-price {
+  color: #059669;
+}
+.rf-billing-card.scale-card .rf-local-price {
+  color: #38bdf8;
+}
+
+.rf-billing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.rf-billing-features li {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rf-billing-features li::before {
+  content: '✓';
+  color: #10b981;
+  font-weight: bold;
+}
+
+/* Custom Interactive Plan Selection Button */
+.rf-plan-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.rf-plan-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.rf-plan-button.active {
+  background: #4f46e5;
+  color: #ffffff;
+  border-color: #4f46e5;
+}
+
+.rf-plan-button.active:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.rf-plan-button:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Dark mode buttons inside Scale Card */
+.rf-billing-card.scale-card .rf-plan-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.rf-billing-card.scale-card .rf-plan-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.rf-billing-card.scale-card .rf-plan-button.active {
+  background: #ffffff;
+  color: #1e1b4b;
+  border-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.rf-billing-card.scale-card .rf-plan-button.active:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.rf-billing-card.scale-card .rf-plan-button:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   HELP CENTER & CHATBOT STYLES
+   ========================================== */
+
+/* Help Center Route styles */
+.rf-help-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rf-help-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.rf-help-search-wrapper {
+  max-width: 600px;
+  margin: 1.5rem auto 0 auto;
+  position: relative;
+}
+
+.rf-help-search-input {
+  width: 100%;
+  padding: 0.85rem 1.25rem 0.85rem 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  background: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.rf-help-search-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.rf-help-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.rf-help-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.rf-help-category-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.rf-help-category-card:hover {
+  transform: translateY(-2px);
+  border-color: #6366f1;
+  box-shadow: 0 12px 20px -8px rgba(99, 102, 241, 0.15);
+}
+
+.rf-help-category-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rf-help-articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.rf-help-article-item {
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rf-help-article-item:hover {
+  border-color: #6366f1;
+  background: #f8fafc;
+}
+
+.rf-help-article-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.rf-help-article-summary {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Article detail modal/pane */
+.rf-help-article-detail {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.rf-help-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #6366f1;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.rf-help-back-button:hover {
+  color: #4338ca;
+}
+
+.rf-markdown-content h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.rf-markdown-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.rf-markdown-content p {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.rf-markdown-content ul, .rf-markdown-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.rf-markdown-content li {
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.rf-markdown-content strong {
+  color: #0f172a;
+}
+
+/* Floating AI Assistant Widget */
+.rf-chat-floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(79, 70, 229, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1000;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rf-chat-floating-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 15px 30px -5px rgba(79, 70, 229, 0.5);
+}
+
+.rf-chat-window {
+  position: fixed;
+  bottom: 85px;
+  right: 20px;
+  width: 380px;
+  height: 520px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rf-chat-header {
+  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  color: white;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rf-chat-title-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.rf-chat-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.rf-chat-status {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.15rem;
+}
+
+.rf-chat-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rf-chat-close-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+}
+
+.rf-chat-close-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.rf-chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #f8fafc;
+}
+
+.rf-chat-msg {
+  max-width: 80%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.rf-chat-msg.assistant {
+  align-self: flex-start;
+  background: white;
+  color: #1e293b;
+  border-bottom-left-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.rf-chat-msg.user {
+  align-self: flex-end;
+  background: #4f46e5;
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
+}
+
+.rf-chat-msg-link {
+  color: #4f46e5;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.rf-chat-msg.user .rf-chat-msg-link {
+  color: white;
+}
+
+.rf-chat-chips-container {
+  padding: 0.5rem 1rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.rf-chat-chips-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+
+.rf-chat-chips {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.35rem;
+}
+
+.rf-chat-chip {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.rf-chat-chip:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.rf-chat-input-wrapper {
+  padding: 0.75rem 1rem;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.rf-chat-input {
+  flex: 1;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.rf-chat-input:focus {
+  border-color: #4f46e5;
+}
+
+.rf-chat-send-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.rf-chat-send-btn:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.rf-chat-send-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.rf-chat-typing {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border-radius: 1rem;
+  width: fit-content;
+  align-self: flex-start;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.rf-chat-dot {
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border-radius: 50%;
+  animation: rfDotWave 1.2s infinite ease-in-out;
+}
+
+.rf-chat-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.rf-chat-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes rfDotWave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}

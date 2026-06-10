@@ -1,0 +1,27 @@
+# Virtual Environment
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+build/
+.react-router/
+.shopify/
+.shopify.lock
+/extensions/*/dist
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and SQLite databases
+*.log
+*.db
+*.db-journal
+
+# OS files
+.DS_Store
+Thumbs.db

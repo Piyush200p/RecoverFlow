@@ -1,0 +1,31 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "8cfe15e29d150422df0111964a5875b7"
+application_url = "https://monitored-buttons-jon-criticism.trycloudflare.com"
+embedded = true
+name = "RecoverFlow AI"
+
+[access_scopes]
+# RecoverFlow AI requires access to checkouts, orders, customers, and billing
+scopes = "read_checkouts,read_orders,write_orders,read_customers,read_products"
+
+[webhooks]
+api_version = "2026-07"
+
+[auth]
+redirect_urls = [
+  "https://monitored-buttons-jon-criticism.trycloudflare.com/auth/callback",
+  "https://monitored-buttons-jon-criticism.trycloudflare.com/auth",
+  "https://monitored-buttons-jon-criticism.trycloudflare.com/api/auth"
+]
+
+[build]
+automatically_update_urls_on_dev = true
+
+
+
+
+
+
+
+
