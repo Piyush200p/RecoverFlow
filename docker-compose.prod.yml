@@ -2,12 +2,33 @@
 # RecoverFlow AI — Docker Compose (Production Deployment)
 # ============================================================
 # Services:
+#   db      — PostgreSQL 16 database (isolated and secure)
 #   redis   — Redis 7 for Celery broker + result backend
 #   api     — FastAPI gateway (production API server)
 #   worker  — Celery background worker
 # ============================================================
 
 services:
+
+  # ── PostgreSQL Database ──────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: recoverflow_prod_db
+    restart: always
+    environment:
+      POSTGRES_USER: recoverflow
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-prod_db_password}
+      POSTGRES_DB: recoverflow
+    # Note: We do NOT publish port 5432 to the host network.
+    # The database is only accessible inside the secure Docker bridge network.
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recoverflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   # ── Redis (Local Service Queue) ──────────────────────────
   redis:
@@ -19,6 +40,11 @@ services:
       - "6379:6379"
     volumes:
       - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   # ── FastAPI Gateway ──────────────────────────────────────
   api:
@@ -30,7 +56,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
+      DATABASE_URL: "${DATABASE_URL:-postgresql+asyncpg://recoverflow:${DB_PASSWORD:-prod_db_password}@db:5432/recoverflow}"
       REDIS_URL: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/0"
       CELERY_BROKER_URL: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/0"
       CELERY_RESULT_BACKEND: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/1"
@@ -42,6 +68,11 @@ services:
       WHATSAPP_DEFAULT_PHONE_NUMBER_ID: "${WHATSAPP_DEFAULT_PHONE_NUMBER_ID}"
       PYTHONPATH: "/app"
       DEBUG: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   # ── Celery Worker ────────────────────────────────────────
   worker:
@@ -50,9 +81,9 @@ services:
       dockerfile: Dockerfile
     container_name: recoverflow_prod_worker
     restart: always
-    command: celery -A tasks worker --loglevel=info --concurrency=8 --queues=default,recovery
+    command: celery -A tasks worker --loglevel=info --concurrency=4 --queues=default,recovery
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
+      DATABASE_URL: "${DATABASE_URL:-postgresql+asyncpg://recoverflow:${DB_PASSWORD:-prod_db_password}@db:5432/recoverflow}"
       REDIS_URL: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/0"
       CELERY_BROKER_URL: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/0"
       CELERY_RESULT_BACKEND: "redis://:${REDIS_PASSWORD:-prod_redis_password}@redis:6379/1"
@@ -63,7 +94,14 @@ services:
       WHATSAPP_DEFAULT_ACCESS_TOKEN: "${WHATSAPP_DEFAULT_ACCESS_TOKEN}"
       WHATSAPP_DEFAULT_PHONE_NUMBER_ID: "${WHATSAPP_DEFAULT_PHONE_NUMBER_ID}"
       PYTHONPATH: "/app"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
+  pgdata:
+    driver: local
   redisdata:
     driver: local
