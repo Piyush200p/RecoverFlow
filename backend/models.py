@@ -65,6 +65,11 @@ class Store(Base):
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     cart_recovery_active: Mapped[bool] = mapped_column(Boolean, default=False)
+    
+    reminder_count: Mapped[int] = mapped_column(Integer, default=3)
+    step_1_delay: Mapped[int] = mapped_column(Integer, default=1800)
+    step_2_delay: Mapped[int] = mapped_column(Integer, default=21600)
+    step_3_delay: Mapped[int] = mapped_column(Integer, default=86400)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

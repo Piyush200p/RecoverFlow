@@ -33,6 +33,10 @@ export default function SettingsPage() {
   const [storeName, setStoreName] = useState("");
   const [brandTone, setBrandTone] = useState("friendly");
   const [subscriptionPlan, setSubscriptionPlan] = useState("FREE");
+  const [reminderCount, setReminderCount] = useState(3);
+  const [step1Delay, setStep1Delay] = useState(30);
+  const [step2Delay, setStep2Delay] = useState(6);
+  const [step3Delay, setStep3Delay] = useState(24);
   
   // WhatsApp connection credentials state
   const [phoneId, setPhoneId] = useState("");
@@ -61,6 +65,10 @@ export default function SettingsPage() {
           setPhoneId(data.store.whatsapp_phone_number_id || "");
           setAccessToken(data.store.whatsapp_access_token || "");
           setBusinessId(data.store.whatsapp_business_id || "");
+          setReminderCount(data.store.reminder_count !== undefined ? data.store.reminder_count : 3);
+          setStep1Delay(data.store.step_1_delay !== undefined ? Math.round(data.store.step_1_delay / 60) : 30);
+          setStep2Delay(data.store.step_2_delay !== undefined ? Math.round(data.store.step_2_delay / 3600) : 6);
+          setStep3Delay(data.store.step_3_delay !== undefined ? Math.round(data.store.step_3_delay / 3600) : 24);
         } else {
           shopify.toast.show("Failed to load settings");
         }
@@ -75,7 +83,7 @@ export default function SettingsPage() {
     loadSettings();
   }, [shopify, backendUrl, shop]);
 
-  // Handle General Settings Save (store name, voice tone, sequence active status)
+  // Handle General Settings Save (store name, voice tone, sequence active status, reminder sequence settings)
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -92,6 +100,10 @@ export default function SettingsPage() {
           brand_tone: brandTone,
           is_active: isActive,
           cart_recovery_active: cartRecoveryActive,
+          reminder_count: Number(reminderCount),
+          step_1_delay: Number(step1Delay) * 60,
+          step_2_delay: Number(step2Delay) * 3600,
+          step_3_delay: Number(step3Delay) * 3600,
         }),
       });
       const data = await response.json();
@@ -149,7 +161,7 @@ export default function SettingsPage() {
             }}
           >
             <p>
-              When active, RecoverFlow AI automatically schedules a three-step recovery sequence
+              When active, RecoverFlow AI automatically schedules the recovery sequence
               for every checkouts/create webhook received.
             </p>
           </Banner>
@@ -182,6 +194,66 @@ export default function SettingsPage() {
                   <InlineStack gap="300">
                     <Button variant="primary" loading={saving} onClick={handleSave}>
                       Save General Settings
+                    </Button>
+                  </InlineStack>
+                </FormLayout>
+              </Box>
+            </Card>
+
+            {/* Reminder Sequence Configurations */}
+            <Card>
+              <Box padding="100">
+                <FormLayout>
+                  <Text variant="headingMd" as="h3">WhatsApp Reminder Sequence</Text>
+                  <Text variant="bodyMd" tone="subdued">
+                    Configure the number of follow-up reminders and the time delay for each message.
+                  </Text>
+                  
+                  <Select
+                    label="Number of Reminders"
+                    options={[
+                      { label: "1 Reminder", value: "1" },
+                      { label: "2 Reminders", value: "2" },
+                      { label: "3 Reminders (Recommended)", value: "3" },
+                    ]}
+                    value={String(reminderCount)}
+                    onChange={(val) => setReminderCount(Number(val))}
+                  />
+
+                  <TextField
+                    label="Reminder 1 Delay (in minutes)"
+                    type="number"
+                    value={String(step1Delay)}
+                    onChange={(val) => setStep1Delay(Number(val))}
+                    helpText="Typically set to 30–60 minutes to catch high checkout intent."
+                    autoComplete="off"
+                  />
+
+                  {reminderCount >= 2 && (
+                    <TextField
+                      label="Reminder 2 Delay (in hours)"
+                      type="number"
+                      value={String(step2Delay)}
+                      onChange={(val) => setStep2Delay(Number(val))}
+                      helpText="Typically set to 6–24 hours after the first reminder."
+                      autoComplete="off"
+                    />
+                  )}
+
+                  {reminderCount >= 3 && (
+                    <TextField
+                      label="Reminder 3 Delay (in hours)"
+                      type="number"
+                      value={String(step3Delay)}
+                      onChange={(val) => setStep3Delay(Number(val))}
+                      helpText="Typically set to 24–72 hours for a final gentle nudge."
+                      autoComplete="off"
+                    />
+                  )}
+
+                  <InlineStack gap="300">
+                    <Button variant="primary" loading={saving} onClick={handleSave}>
+                      Save Sequence Settings
                     </Button>
                   </InlineStack>
                 </FormLayout>

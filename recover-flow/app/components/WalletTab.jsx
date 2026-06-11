@@ -30,6 +30,7 @@ export default function WalletTab({
       title: "500 Credits Pack",
       credits: 500,
       price: 4.99,
+      regularPrice: 9.99,
       description: "Ideal for small stores verifying initial campaigns.",
       badge: null,
     },
@@ -37,7 +38,8 @@ export default function WalletTab({
       id: "growth",
       title: "1000 Credits Pack",
       credits: 1000,
-      price: 7.99,
+      price: 9.99,
+      regularPrice: 19.99,
       description: "10% bonus credits included. Most popular choice.",
       badge: "10% Bonus",
     },
@@ -45,7 +47,8 @@ export default function WalletTab({
       id: "scale",
       title: "5000 Credits Pack",
       credits: 5000,
-      price: 29.99,
+      price: 39.99,
+      regularPrice: 69.99,
       description: "25% bonus credits included. Best value for high-volume stores.",
       badge: "25% Bonus",
     },
@@ -116,15 +119,15 @@ export default function WalletTab({
 
   const getMonthlyChargeLabel = () => {
     switch (currentPlan.toUpperCase()) {
-      case "STARTER": return "$3.99 / mo";
-      case "GROWTH": return "$7.99 / mo";
-      case "SCALE": return "$24.99 / mo";
+      case "STARTER": return "$4.99 / mo";
+      case "GROWTH": return "$9.99 / mo";
+      case "SCALE": return "$29.99 / mo";
       default: return "$0.00 / mo";
     }
   };
 
   const renderItem = (item) => {
-    const { id, title, credits, price, description, badge } = item;
+    const { id, title, credits, price, regularPrice, description, badge } = item;
 
     return (
       <ResourceItem
@@ -150,9 +153,14 @@ export default function WalletTab({
             </BlockStack>
 
             <InlineStack gap="300" blockAlign="center">
-              <Text variant="headingLg" as="span" tone="brand">
-                ${price.toFixed(2)}{formatLocalPrice(price)}
-              </Text>
+              <BlockStack align="end" gap="0">
+                <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85rem', color: 'var(--p-color-text-secondary)', textAlign: 'right' }}>
+                  ${regularPrice.toFixed(2)}
+                </span>
+                <Text variant="headingLg" as="span" tone="brand">
+                  ${price.toFixed(2)}{formatLocalPrice(price)}
+                </Text>
+              </BlockStack>
               <Button
                 variant="primary"
                 loading={purchasingPack === id}

@@ -25,3 +25,9 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Utility Scripts
+make_private.py
+run_make_private.bat
+
+

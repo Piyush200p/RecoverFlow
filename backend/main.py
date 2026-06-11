@@ -269,6 +269,10 @@ class StoreSettingsUpdate(BaseModel):
     whatsapp_access_token: Optional[str] = Field(None, max_length=512)
     is_active: Optional[bool] = None
     cart_recovery_active: Optional[bool] = None
+    reminder_count: Optional[int] = Field(None, ge=1, le=3)
+    step_1_delay: Optional[int] = Field(None, ge=1)
+    step_2_delay: Optional[int] = Field(None, ge=1)
+    step_3_delay: Optional[int] = Field(None, ge=1)
 
 @app.get("/api/v1/store", tags=["Store"])
 async def get_store_info(
@@ -307,6 +311,10 @@ async def get_store_info(
             "whatsapp_access_token": store.whatsapp_access_token,
             "is_active": store.is_active,
             "cart_recovery_active": store.cart_recovery_active,
+            "reminder_count": store.reminder_count,
+            "step_1_delay": store.step_1_delay,
+            "step_2_delay": store.step_2_delay,
+            "step_3_delay": store.step_3_delay,
             "credits_remaining": credits_remaining,
             "created_at": store.created_at.isoformat() if store.created_at else None,
         },
@@ -345,6 +353,14 @@ async def update_store_settings(
         store.is_active = payload.is_active
     if payload.cart_recovery_active is not None:
         store.cart_recovery_active = payload.cart_recovery_active
+    if payload.reminder_count is not None:
+        store.reminder_count = payload.reminder_count
+    if payload.step_1_delay is not None:
+        store.step_1_delay = payload.step_1_delay
+    if payload.step_2_delay is not None:
+        store.step_2_delay = payload.step_2_delay
+    if payload.step_3_delay is not None:
+        store.step_3_delay = payload.step_3_delay
 
     await db.commit()
     return {"status": "success", "message": "Settings updated successfully"}
@@ -584,15 +600,15 @@ async def create_recharge_url(
     # 1. Map selection to credits, price, and name (in USD)
     pack = payload.pack.lower()
     if pack == "starter":
-        price = 4.99
+        price = 4.99  # Standard: 9.99
         credits = 500
         name = "500 Credits Pack"
     elif pack == "growth":
-        price = 7.99
+        price = 9.99  # Standard: 19.99
         credits = 1000
         name = "1000 Credits Pack"
     elif pack == "scale":
-        price = 29.99
+        price = 39.99  # Standard: 69.99
         credits = 5000
         name = "5000 Credits Pack"
     else:
@@ -695,13 +711,13 @@ async def create_subscribe_url(
     plan = payload.plan.lower()
 
     if plan == "starter":
-        price = 3.99
+        price = 4.99  # Standard: 9.99
         name = "Starter Plan"
     elif plan == "growth":
-        price = 7.99
+        price = 9.99  # Standard: 19.99
         name = "Growth Plan"
     elif plan == "scale":
-        price = 24.99
+        price = 29.99  # Standard: 49.99
         name = "Scale Plan"
     else:
         raise HTTPException(status_code=400, detail="Invalid plan selection")
@@ -725,8 +741,8 @@ async def create_subscribe_url(
     }
 
     query = """
-    mutation appSubscriptionCreate($name: String!, $lineItems: [AppSubscriptionLineItemInput!]!, $returnUrl: URL!, $test: Boolean) {
-      appSubscriptionCreate(name: $name, lineItems: $lineItems, returnUrl: $returnUrl, test: $test) {
+    mutation appSubscriptionCreate($name: String!, $lineItems: [AppSubscriptionLineItemInput!]!, $returnUrl: URL!, $trialDays: Int, $test: Boolean) {
+      appSubscriptionCreate(name: $name, lineItems: $lineItems, returnUrl: $returnUrl, trialDays: $trialDays, test: $test) {
         appSubscription {
           id
           confirmationUrl
@@ -742,6 +758,7 @@ async def create_subscribe_url(
         "name": f"RecoverFlow AI — {name}",
         "returnUrl": return_url,
         "test": True,
+        "trialDays": 14,
         "lineItems": [
             {
                 "plan": {
@@ -1009,7 +1026,7 @@ SYSTEM_PROMPT = """You are the customer success AI assistant for RecoverFlow AI.
 CRITICAL INSTRUCTIONS:
 - Speak in simple, non-technical, merchant-friendly business language. Do not use technical jargon.
 - Act as a customer success manager, not a developer or backend engineer.
-- For manual support, billing discrepancies, or specific custom integrations, direct merchants to email support@recoverflow.ai.
+- For manual support, billing discrepancies, or specific custom integrations, direct merchants to email Support.emplabs@gmail.com.
 
 RESTRICTED INFORMATION POLICY:
 - You must NEVER discuss backend details, databases (PostgreSQL, SQLite, Redis), code architecture, webhooks, queues, Celery, worker tasks, internal operations, proprietary algorithms, pricing margins, our utility cost per message, or our profit margins.
@@ -1051,7 +1068,7 @@ async def help_chat(
                 f"{relevant['summary']}\n\n"
                 f"You can read the full step-by-step instructions in the article: "
                 f"[{relevant['title']}](/app/help?article={relevant['id']}).\n\n"
-                f"For additional questions, feel free to email support@recoverflow.ai."
+                f"For additional questions, feel free to email Support.emplabs@gmail.com."
             )
         else:
             msg_lower = payload.message.lower()
@@ -1062,7 +1079,7 @@ async def help_chat(
                 )
             elif "support" in msg_lower or "contact" in msg_lower or "help" in msg_lower:
                 return (
-                    "You can contact our merchant support team directly at **support@recoverflow.ai**. "
+                    "You can contact our merchant support team directly at **Support.emplabs@gmail.com**. "
                     "We typically respond within 24 hours."
                 )
             else:

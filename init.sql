@@ -21,6 +21,10 @@ CREATE TABLE stores (
     store_name          VARCHAR(255),
     brand_tone          VARCHAR(50) DEFAULT 'friendly',
     is_active           BOOLEAN DEFAULT TRUE,
+    reminder_count      INTEGER DEFAULT 3,
+    step_1_delay        INTEGER DEFAULT 1800,
+    step_2_delay        INTEGER DEFAULT 21600,
+    step_3_delay        INTEGER DEFAULT 86400,
     created_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

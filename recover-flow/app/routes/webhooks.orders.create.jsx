@@ -16,12 +16,14 @@ export const action = async ({ request }) => {
 
   try {
     const backendUrl = process.env.RECOVERFLOW_BACKEND_URL || "http://127.0.0.1:8000";
+    const backendSecret = process.env.BACKEND_API_SECRET || "default_local_secret";
     const response = await fetch(`${backendUrl}/webhooks/order-created`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Shopify-Shop-Domain": shop,
         "X-Webhook-Topic": topic,
+        "X-RecoverFlow-Secret": backendSecret,
       },
       body: JSON.stringify(payload),
     });

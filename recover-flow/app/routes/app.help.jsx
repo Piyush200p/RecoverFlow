@@ -11,6 +11,7 @@ import {
   Icon,
   Box,
   Spinner,
+  Button,
 } from "@shopify/polaris";
 import { SearchIcon, ArrowLeftIcon, EmailIcon } from "@shopify/polaris-icons";
 import "../styles/app.css";
@@ -215,8 +216,14 @@ export default function HelpCenterPage() {
                     Have questions about specific configurations or custom invoice setups?
                   </Text>
                   <Text variant="bodyMd" as="p" fontWeight="bold">
-                    Email us at support@recoverflow.ai
+                    Email us at Support.emplabs@gmail.com
                   </Text>
+                  <Button variant="secondary" onClick={() => {
+                    localStorage.removeItem("rf_tour_completed");
+                    shopify.toast.show("Onboarding tour reset! Return to the Dashboard to take the tour.");
+                  }}>
+                    Restart Onboarding Tour
+                  </Button>
                 </BlockStack>
               </Card>
             </Layout.Section>

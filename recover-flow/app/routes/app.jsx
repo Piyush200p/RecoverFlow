@@ -142,7 +142,7 @@ function FloatingChatbot({ shop, backendUrl }) {
       } else {
         setChatHistory((prev) => [
           ...prev,
-          { role: "assistant", content: "I'm sorry, I encountered an error. Please contact support@recoverflow.ai for help." },
+          { role: "assistant", content: "I'm sorry, I encountered an error. Please contact Support.emplabs@gmail.com for help." },
         ]);
       }
     } catch (err) {
@@ -201,7 +201,7 @@ function FloatingChatbot({ shop, backendUrl }) {
   return (
     <>
       {/* Floating AI Assistant Drawer/Widget */}
-      <button className="rf-chat-floating-button" onClick={() => setIsChatOpen(!isChatOpen)}>
+      <button id="tour-chatbot" className="rf-chat-floating-button" onClick={() => setIsChatOpen(!isChatOpen)}>
         💬 Ask RecoverFlow
       </button>
 

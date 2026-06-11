@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     # ── Shopify ──────────────────────────────────────────────
     SHOPIFY_API_KEY: str = ""          # Also known as Client ID
     SHOPIFY_API_SECRET: str = ""       # Used to verify JWT & webhook HMAC
+    BACKEND_API_SECRET: str = "default_local_secret"  # Shared secret to authenticate Remix webhook forwarding
 
     # ── Google Gemini ────────────────────────────────────────
     GEMINI_API_KEY: str = ""

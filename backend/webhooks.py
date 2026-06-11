@@ -18,7 +18,8 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Optional
 
-from fastapi import APIRouter, Request, Header, HTTPException, status, BackgroundTasks
+from fastapi import APIRouter, Request, Header, HTTPException, status, BackgroundTasks, Depends, Security
+from fastapi.security.api_key import APIKeyHeader
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -37,7 +38,17 @@ from config import get_settings
 logger = logging.getLogger("recoverflow.webhooks")
 settings = get_settings()
 
-router = APIRouter(prefix="/webhooks", tags=["Webhooks"])
+api_key_header = APIKeyHeader(name="X-RecoverFlow-Secret", auto_error=False)
+
+async def verify_secret(x_recoverflow_secret: Optional[str] = Security(api_key_header)):
+    expected = settings.BACKEND_API_SECRET
+    if expected and x_recoverflow_secret != expected:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid backend API secret",
+        )
+
+router = APIRouter(prefix="/webhooks", tags=["Webhooks"], dependencies=[Depends(verify_secret)])
 
 
 # ═════════════════════════════════════════════════════════════

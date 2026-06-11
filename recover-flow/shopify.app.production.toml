@@ -1,0 +1,21 @@
+# RecoverFlow AI — Shopify App Configuration (Production)
+# ========================================================
+# Run deployment with: npx shopify app deploy --config production
+
+client_id = "YOUR_PRODUCTION_CLIENT_ID"
+application_url = "https://your-production-domain.com"
+embedded = true
+name = "RecoverFlow AI"
+
+[access_scopes]
+scopes = "read_checkouts,read_orders,write_orders,read_customers,read_products"
+
+[webhooks]
+api_version = "2026-07"
+
+[auth]
+redirect_urls = [
+  "https://your-production-domain.com/auth/callback",
+  "https://your-production-domain.com/auth",
+  "https://your-production-domain.com/api/auth"
+]

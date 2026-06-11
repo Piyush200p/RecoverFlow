@@ -30,11 +30,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import sessionmaker, Session
 
-test_db_url = "sqlite+aiosqlite:////tmp/test_recoverflow.db"
-test_sync_db_url = "sqlite:////tmp/test_recoverflow.db"
-
-async_engine = create_async_engine(test_db_url, echo=False)
-sync_engine = create_engine(test_sync_db_url, echo=False)
+TestAsyncSession = async_sessionmaker(class_=AsyncSession, expire_on_commit=False)
+TestSyncSession = sessionmaker(class_=Session, expire_on_commit=False)
 
 # Custom compilation rule: Compile PostgreSQL JSONB to SQLite JSON
 from sqlalchemy.ext.compiler import compiles
@@ -43,13 +40,11 @@ from sqlalchemy.dialects.postgresql import JSONB
 def compile_jsonb_sqlite(element, compiler, **kw):
     return "JSON"
 
-TestAsyncSession = async_sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
-TestSyncSession = sessionmaker(bind=sync_engine, class_=Session, expire_on_commit=False)
+async_engine = None
+sync_engine = None
 
 import database
-database.engine = async_engine
 database.async_session_factory = TestAsyncSession
-database.sync_engine = sync_engine
 database.sync_session_factory = TestSyncSession
 
 # Helper dependencies
@@ -83,16 +78,14 @@ database.get_sync_db = get_test_sync_db
 
 # Delete old test DB if exists
 import os
-for f in ["/tmp/test_recoverflow.db", "/tmp/test_recoverflow.db-journal"]:
+for f in ["test_recoverflow.db", "test_recoverflow.db-journal"]:
     if os.path.exists(f):
         try:
             os.remove(f)
         except Exception:
             pass
 
-# 3. Create tables
 from models import Base
-Base.metadata.create_all(sync_engine)
 
 # 4. Import FastAPI app & webhooks
 from fastapi.testclient import TestClient
@@ -110,13 +103,31 @@ app.dependency_overrides[verify_shopify_token] = lambda: {
     "exp": 9999999999,
 }
 
+from webhooks import verify_secret
+app.dependency_overrides[verify_secret] = lambda: None
+
 
 class TestRecoverFlowE2EPipeline(unittest.TestCase):
 
     def setUp(self):
-        # Drop and recreate all tables in the existing file
-        Base.metadata.drop_all(sync_engine)
+        import uuid
+        self.db_filename = f"test_recoverflow_{uuid.uuid4().hex}.db"
+        self.test_db_url = f"sqlite+aiosqlite:///{self.db_filename}"
+        self.test_sync_db_url = f"sqlite:///{self.db_filename}"
+        
+        from sqlalchemy.pool import NullPool
+        global async_engine, sync_engine
+        async_engine = create_async_engine(self.test_db_url, echo=False, poolclass=NullPool, connect_args={"timeout": 30})
+        sync_engine = create_engine(self.test_sync_db_url, echo=False, poolclass=NullPool, connect_args={"timeout": 30})
+        
+        TestAsyncSession.configure(bind=async_engine)
+        TestSyncSession.configure(bind=sync_engine)
+        
+        database.engine = async_engine
+        database.sync_engine = sync_engine
+        
         Base.metadata.create_all(sync_engine)
+        
         self.shop = "test-merchant.myshopify.com"
         self.mock_jwt_payload = {
             "iss": f"https://{self.shop}/admin",
@@ -127,7 +138,18 @@ class TestRecoverFlowE2EPipeline(unittest.TestCase):
         }
 
     def tearDown(self):
-        pass
+        global async_engine, sync_engine
+        if sync_engine:
+            sync_engine.dispose()
+        if async_engine:
+            async_engine.sync_engine.dispose()
+        import os
+        for f in [self.db_filename, f"{self.db_filename}-journal", f"{self.db_filename}-wal", f"{self.db_filename}-shm"]:
+            if os.path.exists(f):
+                try:
+                    os.remove(f)
+                except Exception:
+                    pass
 
     @patch("main.verify_shopify_token")
     def test_complete_e2e_lifecycle(self, mock_verify_token):
@@ -172,7 +194,11 @@ class TestRecoverFlowE2EPipeline(unittest.TestCase):
         settings_payload = {
             "store_name": "Gourmet Chocolates Inc.",
             "brand_tone": "casual",
-            "is_active": True
+            "is_active": True,
+            "reminder_count": 2,
+            "step_1_delay": 180,
+            "step_2_delay": 3600,
+            "step_3_delay": 7200
         }
         response = client.post("/api/v1/store/settings", json=settings_payload, headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -182,6 +208,10 @@ class TestRecoverFlowE2EPipeline(unittest.TestCase):
             db_store = session.query(Store).filter_by(shopify_domain=self.shop).first()
             self.assertEqual(db_store.store_name, "Gourmet Chocolates Inc.")
             self.assertEqual(db_store.brand_tone, "casual")
+            self.assertEqual(db_store.reminder_count, 2)
+            self.assertEqual(db_store.step_1_delay, 180)
+            self.assertEqual(db_store.step_2_delay, 3600)
+            self.assertEqual(db_store.step_3_delay, 7200)
 
         # ─────────────────────────────────────────────────────────────
         # STEP 3: Verify & Save Meta WhatsApp Cloud API configuration

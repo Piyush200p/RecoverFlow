@@ -16,6 +16,7 @@ import {
   Box
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
+import OnboardingTour from "../components/OnboardingTour";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
@@ -227,126 +228,133 @@ export default function DashboardPage() {
 
         {/* KPI Grid */}
         <Layout.Section>
-          <Grid>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
-              <Card>
-                <BlockStack gap="100">
-                  <Text variant="headingSm" tone="subdued">Recovered Revenue</Text>
-                  <Text variant="heading2xl" as="h2" tone="success">
-                    {formatCurrency(metrics?.recovered_revenue ?? 0)}
-                  </Text>
-                  <Text variant="bodyXs" tone="subdued">
-                    From {metrics?.recovered_orders ?? 0} recovered carts
-                  </Text>
-                </BlockStack>
-              </Card>
-            </Grid.Cell>
+          <div id="tour-roi">
+            <Grid>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
+                <Card>
+                  <BlockStack gap="100">
+                    <Text variant="headingSm" tone="subdued">Recovered Revenue</Text>
+                    <Text variant="heading2xl" as="h2" tone="success">
+                      {formatCurrency(metrics?.recovered_revenue ?? 0)}
+                    </Text>
+                    <Text variant="bodyXs" tone="subdued">
+                      From {metrics?.recovered_orders ?? 0} recovered carts
+                    </Text>
+                  </BlockStack>
+                </Card>
+              </Grid.Cell>
 
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
-              <Card>
-                <BlockStack gap="100">
-                  <Text variant="headingSm" tone="subdued">Recovery Rate</Text>
-                  <Text variant="heading2xl" as="h2">
-                    {metrics?.recovery_rate ?? 0.0}%
-                  </Text>
-                  <Text variant="bodyXs" tone="subdued">
-                    {metrics?.recovered_orders ?? 0} out of {metrics?.total_abandoned_carts ?? 0} checkouts
-                  </Text>
-                </BlockStack>
-              </Card>
-            </Grid.Cell>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
+                <Card>
+                  <BlockStack gap="100">
+                    <Text variant="headingSm" tone="subdued">Recovery Rate</Text>
+                    <Text variant="heading2xl" as="h2">
+                      {metrics?.recovery_rate ?? 0.0}%
+                    </Text>
+                    <Text variant="bodyXs" tone="subdued">
+                      {metrics?.recovered_orders ?? 0} out of {metrics?.total_abandoned_carts ?? 0} checkouts
+                    </Text>
+                  </BlockStack>
+                </Card>
+              </Grid.Cell>
 
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
-              <Card>
-                <BlockStack gap="100">
-                  <Text variant="headingSm" tone="subdued">Opportunity Score</Text>
-                  <Text variant="heading2xl" as="h2" tone="warning">
-                    {formatCurrency(metrics?.recoverable_revenue_estimate ?? 0)}
-                  </Text>
-                  <Text variant="bodyXs" tone="subdued">
-                    Estimated recoverable lost revenue
-                  </Text>
-                </BlockStack>
-              </Card>
-            </Grid.Cell>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
+                <Card>
+                  <BlockStack gap="100">
+                    <Text variant="headingSm" tone="subdued">Opportunity Score</Text>
+                    <Text variant="heading2xl" as="h2" tone="warning">
+                      {formatCurrency(metrics?.recoverable_revenue_estimate ?? 0)}
+                    </Text>
+                    <Text variant="bodyXs" tone="subdued">
+                      Estimated recoverable lost revenue
+                    </Text>
+                  </BlockStack>
+                </Card>
+              </Grid.Cell>
 
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
-              <Card>
-                <BlockStack gap="100">
-                  <Text variant="headingSm" tone="subdued">Credits Remaining</Text>
-                  <Text variant="heading2xl" as="h2" tone={(metrics?.credits_remaining ?? 0) < 10 ? "critical" : "subdued"}>
-                    {metrics?.credits_remaining ?? 0}
-                  </Text>
-                  <Text variant="bodyXs" tone="subdued">
-                    Total messages sent: {metrics?.messages_sent ?? 0}
-                  </Text>
-                </BlockStack>
-              </Card>
-            </Grid.Cell>
-          </Grid>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 3, lg: 3, xl: 3 }}>
+                <div id="tour-credits">
+                  <Card>
+                    <BlockStack gap="100">
+                      <Text variant="headingSm" tone="subdued">Credits Remaining</Text>
+                      <Text variant="heading2xl" as="h2" tone={(metrics?.credits_remaining ?? 0) < 10 ? "critical" : "subdued"}>
+                        {metrics?.credits_remaining ?? 0}
+                      </Text>
+                      <Text variant="bodyXs" tone="subdued">
+                        Total messages sent: {metrics?.messages_sent ?? 0}
+                      </Text>
+                    </BlockStack>
+                  </Card>
+                </div>
+              </Grid.Cell>
+            </Grid>
+          </div>
         </Layout.Section>
 
         {/* Abandoned Checkouts and Message Logs */}
-        <Layout.Section variant="oneHalf">
-          <Card padding="0">
-            <Box padding="400">
-              <BlockStack gap="200">
-                <Text variant="headingMd" as="h3">Recent Abandoned Carts</Text>
-                {checkouts.length === 0 ? (
-                  <div style={{ padding: "2rem", textAlign: "center" }}>
-                    <Text tone="subdued">No abandoned checkouts found.</Text>
-                  </div>
-                ) : (
-                  <IndexTable
-                    resourceName={{ singular: "checkout", plural: "checkouts" }}
-                    itemCount={checkouts.length}
-                    headings={[
-                      { title: "Customer" },
-                      { title: "Segment" },
-                      { title: "Total" },
-                      { title: "Status" },
-                      { title: "Date" },
-                    ]}
-                    selectable={false}
-                  >
-                    {checkoutRows}
-                  </IndexTable>
-                )}
-              </BlockStack>
-            </Box>
-          </Card>
-        </Layout.Section>
+        <div id="tour-logs" style={{ display: 'contents' }}>
+          <Layout.Section variant="oneHalf">
+            <Card padding="0">
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text variant="headingMd" as="h3">Recent Abandoned Carts</Text>
+                  {checkouts.length === 0 ? (
+                    <div style={{ padding: "2rem", textAlign: "center" }}>
+                      <Text tone="subdued">No abandoned checkouts found.</Text>
+                    </div>
+                  ) : (
+                    <IndexTable
+                      resourceName={{ singular: "checkout", plural: "checkouts" }}
+                      itemCount={checkouts.length}
+                      headings={[
+                        { title: "Customer" },
+                        { title: "Segment" },
+                        { title: "Total" },
+                        { title: "Status" },
+                        { title: "Date" },
+                      ]}
+                      selectable={false}
+                    >
+                      {checkoutRows}
+                    </IndexTable>
+                  )}
+                </BlockStack>
+              </Box>
+            </Card>
+          </Layout.Section>
 
-        <Layout.Section variant="oneHalf">
-          <Card padding="0">
-            <Box padding="400">
-              <BlockStack gap="200">
-                <Text variant="headingMd" as="h3">Recent Sent Reminders</Text>
-                {messages.length === 0 ? (
-                  <div style={{ padding: "2rem", textAlign: "center" }}>
-                    <Text tone="subdued">No recovery messages sent yet.</Text>
-                  </div>
-                ) : (
-                  <IndexTable
-                    resourceName={{ singular: "message", plural: "messages" }}
-                    itemCount={messages.length}
-                    headings={[
-                      { title: "Customer" },
-                      { title: "Step" },
-                      { title: "Status" },
-                      { title: "Time" },
-                    ]}
-                    selectable={false}
-                  >
-                    {messageRows}
-                  </IndexTable>
-                )}
-              </BlockStack>
-            </Box>
-          </Card>
-        </Layout.Section>
+          <Layout.Section variant="oneHalf">
+            <Card padding="0">
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text variant="headingMd" as="h3">Recent Sent Reminders</Text>
+                  {messages.length === 0 ? (
+                    <div style={{ padding: "2rem", textAlign: "center" }}>
+                      <Text tone="subdued">No recovery messages sent yet.</Text>
+                    </div>
+                  ) : (
+                    <IndexTable
+                      resourceName={{ singular: "message", plural: "messages" }}
+                      itemCount={messages.length}
+                      headings={[
+                        { title: "Customer" },
+                        { title: "Step" },
+                        { title: "Status" },
+                        { title: "Time" },
+                      ]}
+                      selectable={false}
+                    >
+                      {messageRows}
+                    </IndexTable>
+                  )}
+                </BlockStack>
+              </Box>
+            </Card>
+          </Layout.Section>
+        </div>
 
       </Layout>
+      <OnboardingTour />
     </Page>
   );
 }

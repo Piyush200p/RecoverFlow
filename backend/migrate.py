@@ -54,6 +54,23 @@ def run_migrations():
         """
         ALTER TABLE sent_messages 
         ADD COLUMN IF NOT EXISTS cart_id VARCHAR(255) REFERENCES abandoned_carts(cart_id) ON DELETE CASCADE;
+        """,
+        # 5. Add reminder settings to stores table
+        """
+        ALTER TABLE stores 
+        ADD COLUMN IF NOT EXISTS reminder_count INTEGER DEFAULT 3;
+        """,
+        """
+        ALTER TABLE stores 
+        ADD COLUMN IF NOT EXISTS step_1_delay INTEGER DEFAULT 1800;
+        """,
+        """
+        ALTER TABLE stores 
+        ADD COLUMN IF NOT EXISTS step_2_delay INTEGER DEFAULT 21600;
+        """,
+        """
+        ALTER TABLE stores 
+        ADD COLUMN IF NOT EXISTS step_3_delay INTEGER DEFAULT 86400;
         """
     ]
 

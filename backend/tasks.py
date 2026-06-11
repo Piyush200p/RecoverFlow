@@ -141,8 +141,18 @@ def schedule_recovery_workflow(checkout_id: str, shop_domain: str):
         is_scale = store and store.subscription_plan == "SCALE"
         target_queue = "priority" if is_scale else "recovery"
 
-        for step in [1, 2, 3]:
-            delay_seconds = _get_step_delay(step)
+        reminder_count = store.reminder_count if (store and getattr(store, "reminder_count", None) is not None) else 3
+
+        for step in range(1, reminder_count + 1):
+            if step == 1:
+                delay_seconds = store.step_1_delay if (store and getattr(store, "step_1_delay", None) is not None) else settings.RECOVERY_STEP_1_DELAY
+            elif step == 2:
+                delay_seconds = store.step_2_delay if (store and getattr(store, "step_2_delay", None) is not None) else settings.RECOVERY_STEP_2_DELAY
+            elif step == 3:
+                delay_seconds = store.step_3_delay if (store and getattr(store, "step_3_delay", None) is not None) else settings.RECOVERY_STEP_3_DELAY
+            else:
+                delay_seconds = 86400 * (step - 2)
+
             scheduled_time = now + timedelta(seconds=delay_seconds)
 
             # Dispatch the Celery task with countdown

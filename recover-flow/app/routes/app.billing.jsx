@@ -81,16 +81,16 @@ export default function BillingPage() {
 
   // Pricing values in USD
   const plans = {
-    starter: { name: "Starter Plan", price: 3.99, credits: 100 },
-    growth: { name: "Growth Plan", price: 7.99, credits: 300 },
-    scale: { name: "Scale Plan", price: 24.99, credits: 1000 },
+    starter: { name: "Starter Plan", price: 4.99, regularPrice: 9.99, credits: 100 },
+    growth: { name: "Growth Plan", price: 9.99, regularPrice: 19.99, credits: 300 },
+    scale: { name: "Scale Plan", price: 29.99, regularPrice: 49.99, credits: 1000 },
   };
 
   const extraPacks = {
-    none: { name: "No extra credits", price: 0.0, credits: 0 },
-    starter: { name: "500 Credits Pack", price: 4.99, credits: 500 },
-    growth: { name: "1000 Credits Pack", price: 7.99, credits: 1000 },
-    scale: { name: "5000 Credits Pack", price: 29.99, credits: 5000 },
+    none: { name: "No extra credits", price: 0.0, regularPrice: 0.0, credits: 0 },
+    starter: { name: "500 Credits Pack", price: 4.99, regularPrice: 9.99, credits: 500 },
+    growth: { name: "1000 Credits Pack", price: 9.99, regularPrice: 19.99, credits: 1000 },
+    scale: { name: "5000 Credits Pack", price: 39.99, regularPrice: 69.99, credits: 5000 },
   };
 
   // Currency helpers
@@ -196,10 +196,12 @@ export default function BillingPage() {
               {currentPlan === "STARTER" && <span className="rf-popular-badge">Active Plan</span>}
               <BlockStack gap="200">
                 <div className="rf-billing-title">Starter Plan</div>
+                <div className="rf-trial-badge">14-Day Free Trial</div>
                 <div className="rf-billing-price">
-                  $3.99<span>/mo</span>
+                  <div className="rf-original-price">${plans.starter.regularPrice.toFixed(2)}</div>
+                  ${plans.starter.price.toFixed(2)}<span>/mo</span>
                   <div className="rf-local-price">
-                    {formatLocalPrice(3.99)}
+                    {formatLocalPrice(plans.starter.price)}
                   </div>
                 </div>
                 <ul className="rf-billing-features">
@@ -229,10 +231,12 @@ export default function BillingPage() {
               )}
               <BlockStack gap="200">
                 <div className="rf-billing-title">Growth Plan</div>
+                <div className="rf-trial-badge">14-Day Free Trial</div>
                 <div className="rf-billing-price">
-                  $7.99<span>/mo</span>
+                  <div className="rf-original-price">${plans.growth.regularPrice.toFixed(2)}</div>
+                  ${plans.growth.price.toFixed(2)}<span>/mo</span>
                   <div className="rf-local-price">
-                    {formatLocalPrice(7.99)}
+                    {formatLocalPrice(plans.growth.price)}
                   </div>
                 </div>
                 <ul className="rf-billing-features">
@@ -260,10 +264,12 @@ export default function BillingPage() {
               {currentPlan === "SCALE" && <span className="rf-popular-badge">Active Plan</span>}
               <BlockStack gap="200">
                 <div className="rf-billing-title">Scale Plan</div>
+                <div className="rf-trial-badge">14-Day Free Trial</div>
                 <div className="rf-billing-price">
-                  $24.99<span>/mo</span>
+                  <div className="rf-original-price">${plans.scale.regularPrice.toFixed(2)}</div>
+                  ${plans.scale.price.toFixed(2)}<span>/mo</span>
                   <div className="rf-local-price">
-                    {formatLocalPrice(24.99)}
+                    {formatLocalPrice(plans.scale.price)}
                   </div>
                 </div>
                 <ul className="rf-billing-features">
@@ -308,21 +314,21 @@ export default function BillingPage() {
                     onChange={() => setExtraCreditsPack("none")}
                   />
                   <RadioButton
-                    label={`500 Credits — $4.99 one-time${formatLocalPrice(4.99)}`}
+                    label={`500 Credits — $4.99 one-time (Was $9.99)${formatLocalPrice(4.99)}`}
                     checked={extraCreditsPack === "starter"}
                     id="starter"
                     name="extraCredits"
                     onChange={() => setExtraCreditsPack("starter")}
                   />
                   <RadioButton
-                    label={`1000 Credits — $7.99 one-time${formatLocalPrice(7.99)} (10% Bonus)`}
+                    label={`1000 Credits — $9.99 one-time (Was $19.99)${formatLocalPrice(9.99)} (10% Bonus)`}
                     checked={extraCreditsPack === "growth"}
                     id="growth"
                     name="extraCredits"
                     onChange={() => setExtraCreditsPack("growth")}
                   />
                   <RadioButton
-                    label={`5000 Credits — $29.99 one-time${formatLocalPrice(29.99)} (25% Bonus)`}
+                    label={`5000 Credits — $39.99 one-time (Was $69.99)${formatLocalPrice(39.99)} (25% Bonus)`}
                     checked={extraCreditsPack === "scale"}
                     id="scale"
                     name="extraCredits"
