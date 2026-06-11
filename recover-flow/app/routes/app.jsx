@@ -12,11 +12,30 @@ import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
+  const backendUrl = process.env.RECOVERFLOW_BACKEND_URL || "http://localhost:8000";
+
+  let isMaintenance = false;
+  try {
+    const response = await fetch(`${backendUrl}/health`, {
+      method: "GET",
+      signal: AbortSignal.timeout(3000),
+    });
+    if (response.status === 503) {
+      const data = await response.json();
+      if (data.status === "maintenance") {
+        isMaintenance = true;
+      }
+    }
+  } catch (err) {
+    // If the server is offline or fails to connect, treat it as maintenance state
+    isMaintenance = true;
+  }
 
   return {
     apiKey: process.env.SHOPIFY_API_KEY || "",
     shop: session.shop,
-    backendUrl: process.env.RECOVERFLOW_BACKEND_URL || "http://localhost:8000",
+    backendUrl,
+    isMaintenance,
   };
 };
 
@@ -36,8 +55,32 @@ function CustomLink({ url, children, external, ref, ...rest }) {
 }
 
 export default function App() {
-  const { apiKey, shop, backendUrl } = useLoaderData();
+  const { apiKey, shop, backendUrl, isMaintenance } = useLoaderData();
   const location = useLocation();
+
+  if (isMaintenance) {
+    return (
+      <ShopifyAppProvider embedded apiKey={apiKey}>
+        <PolarisProvider i18n={enTranslations} linkComponent={CustomLink}>
+          <Frame>
+            <div className="rf-maintenance-container">
+              <div className="rf-maintenance-card">
+                <span className="rf-maintenance-icon" role="img" aria-label="tools">⚙️</span>
+                <h1 className="rf-maintenance-title">System Maintenance</h1>
+                <p className="rf-maintenance-text">
+                  We are currently upgrading our database servers and running migrations to optimize recovery speeds.
+                </p>
+                <p className="rf-maintenance-subtext">
+                  Your active cart tracking and automated sequences are running safely in the background and will fully sync back once complete.
+                </p>
+                <div className="rf-maintenance-badge">Estimated Time: &lt; 10 mins</div>
+              </div>
+            </div>
+          </Frame>
+        </PolarisProvider>
+      </ShopifyAppProvider>
+    );
+  }
 
   const navigationMarkup = (
     <Navigation location={location.pathname}>

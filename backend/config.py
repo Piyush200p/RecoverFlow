@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "RecoverFlow AI"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
+    MAINTENANCE_MODE: bool = False
 
     # ── Database (PostgreSQL) ────────────────────────────────
     DATABASE_URL: str = "postgresql+asyncpg://recoverflow:recoverflow@db:5432/recoverflow"

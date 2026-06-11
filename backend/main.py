@@ -18,6 +18,7 @@ import httpx
 import jwt
 from fastapi import FastAPI, Depends, HTTPException, Header, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import select, func as sqlfunc
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,6 +58,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# ── Maintenance Middleware ────────────────────────────────────
+@app.middleware("http")
+async def maintenance_middleware(request, call_next):
+    if settings.MAINTENANCE_MODE:
+        if request.url.path == "/health":
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={"status": "maintenance", "service": settings.APP_NAME, "version": settings.APP_VERSION}
+            )
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"status": "maintenance", "detail": "Server is undergoing scheduled maintenance."}
+        )
+    return await call_next(request)
 
 # ═════════════════════════════════════════════════════════════
 #  SECURITY: Shopify App Bridge JWT Verification
